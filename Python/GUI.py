@@ -1,8 +1,22 @@
+
+
 import math    
 import PySimpleGUI as sg
 from Candidate_Permutations import *    
 
 def DrawPieChart(graph,percentages,labels,colors,previous_graph_items=0):
+    """Draw a pie chart using arcs
+
+    Args:
+        graph (window): Reference to graph to draw pie chart on
+        percentages (list[float]): List of percentages
+        labels (list[str]): List of Labels to match to each arc
+        colors (list[str]): List of colors to match to each arc
+        previous_graph_items (list, optional): Contains previous graph to delete. Defaults to 0.
+
+    Returns:
+        list: returns either error code or a list of the arcs drawn so they can be deleted later
+    """
     if previous_graph_items is list:
         for x in range(len(previous_graph_items)):
             graph.delete_figure(previous_graph_items[x])
@@ -28,8 +42,15 @@ def DrawPieChart(graph,percentages,labels,colors,previous_graph_items=0):
     
     return current_graph_items
 
-
 def Switch_Tabs(opened_tab):
+    """Close current tab and open a new tab
+
+    Args:
+        opened_tab (str): Name of new tab to switch to
+
+    Returns:
+        int: Returns status code
+    """
     tab_list = ['input_tab','loading_screen','results_tab']
     for x in tab_list:
         if opened_tab != x:
@@ -39,6 +60,17 @@ def Switch_Tabs(opened_tab):
     return 0
 
 def PrepareResults(cand,results,population,visible=False):
+    """Compile results into usable formats for display
+
+    Args:
+        cand (list[str]): list of candidate names
+        results (list[][]): 2D list of candidate permutations and vote tallies, formatted as [[Candidate names],[1st choice votes],[2nd choice votes],[nth choice]...]
+        population (int): Population size
+        visible (bool, optional): Show a loading screen during operations. Defaults to False.
+
+    Returns:
+        tuple[list[float], list[float], list[list], list[list]]: Returns compiled data
+    """
     if visible:
         Switch_Tabs('loading_screen')
         window['completion'].update(value='0')
